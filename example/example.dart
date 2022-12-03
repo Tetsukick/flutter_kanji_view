@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_kanji_view/fklib/drawing_widget.dart';
+import 'package:flutter_kanji_view/misc/converter.dart';
+
 class Playground extends StatefulWidget {
   @override
   _PlaygroundState createState() {
@@ -36,12 +40,13 @@ class _PlaygroundState extends State<Playground>
                 scaleToViewport: true,
                 duration: new Duration(seconds: 6)),
           ),
-          RaisedButton(
-              child: Text('Redraw'),
-              onPressed: () {
-                _controller.reset();
-                _controller.forward();
-              })
+          ElevatedButton(
+            child: Text('Redraw'),
+            onPressed: () {
+              _controller.reset();
+              _controller.forward();
+            }
+          ),
         ],
       ),
     );

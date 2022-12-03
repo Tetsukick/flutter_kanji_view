@@ -52,7 +52,7 @@ class SvgParser {
   void loadFromString(String svgString) {
     this._pathSegments.clear();
     int index = 0; //number of parsed path elements
-    var doc = xml.parse(svgString);
+    var doc = xml.XmlDocument.parse(svgString);
     // TODO: For now only <path> tags are considered for parsing (add circle, rect, arcs etc.)
     doc
         .findAllElements("path")

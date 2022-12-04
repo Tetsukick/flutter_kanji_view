@@ -21,5 +21,5 @@ abstract class AnimationRange {
 ///
 /// The [start] should be >= 0 and [end] < than the number of the provided Path objects.
 class PathIndexRange extends AnimationRange {
-  PathIndexRange({int start, int end}) : super(start, end);
+  PathIndexRange({required int start, required int end}) : super(start, end);
 }

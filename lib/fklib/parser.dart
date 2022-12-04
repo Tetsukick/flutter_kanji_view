@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -10,11 +11,11 @@ import 'package:xml/xml.dart' as xml;
 /// Parses a minimal subset of a SVG file and extracts all paths segments.
 class SvgParser {
   /// Each [PathSegment] represents a continuous Path element of the parent Path
-  final List<PathSegment> _pathSegments = List<PathSegment>();
-  List<Path> _paths = new List<Path>();
+  final List<PathSegment> _pathSegments = <PathSegment>[];
+  List<Path> _paths = <Path>[];
 
   //TODO do proper parsing and support hex-alpa and RGBA
-  Color parseColor(String cStr) {
+  Color parseColor(String? cStr) {
     if (cStr == null || cStr.isEmpty)
       throw UnsupportedError("Empty color field found.");
     if (cStr[0] == '#') {
@@ -29,7 +30,7 @@ class SvgParser {
   }
 
   //Extract segments of each path and create [PathSegment] representation
-  void addPathSegments(Path path, int index, double strokeWidth, Color color) {
+  void addPathSegments(Path path, int index, double? strokeWidth, Color? color) {
     int firstPathSegmentIndex = this._pathSegments.length;
     int relativeIndex = 0;
     path.computeMetrics().forEach((pp) {
@@ -58,46 +59,42 @@ class SvgParser {
         .findAllElements("path")
         .map((node) => node.attributes)
         .forEach((attributes) {
-      var dPath = attributes.firstWhere((attr) => attr.name.local == "d",
-          orElse: () => null);
+      var dPath = attributes.firstWhereOrNull((attr) => attr.name.local == "d");
       if (dPath != null) {
         Path path = new Path();
         writeSvgPathDataToPath(dPath.value, new PathModifier(path));
 
-        Color color;
-        double strokeWidth;
+        Color? color;
+        double? strokeWidth;
 
         //Attributes - [1] css-styling
-        var style = attributes.firstWhere((attr) => attr.name.local == "style",
-            orElse: () => null);
+        var style = attributes.firstWhereOrNull((attr) => attr.name.local == "style");
         if (style != null) {
           //Parse color of stroke
           RegExp exp = new RegExp(r"stroke:([^;]+);");
-          Match match = exp.firstMatch(style.value);
+          Match? match = exp.firstMatch(style.value);
           if (match != null) {
-            String cStr = match.group(1);
+            String? cStr = match.group(1);
             color = parseColor(cStr);
           }
           //Parse stroke-width
           exp = new RegExp(r"stroke-width:([0-9.]+)");
           match = exp.firstMatch(style.value);
           if (match != null) {
-            String cStr = match.group(1);
+            String cStr = match.group(1)!;
             strokeWidth = double.tryParse(cStr) ?? null;
           }
         }
 
         //Attributes - [2] svg-attributes
-        var strokeElement = attributes.firstWhere(
-            (attr) => attr.name.local == "stroke",
-            orElse: () => null);
+        var strokeElement = attributes.firstWhereOrNull(
+            (attr) => attr.name.local == "stroke");
         if (strokeElement != null) {
           color = parseColor(strokeElement.value);
         }
 
-        var strokeWidthElement = attributes.firstWhere(
-            (attr) => attr.name.local == "stroke-width",
-            orElse: () => null);
+        var strokeWidthElement = attributes.firstWhereOrNull(
+            (attr) => attr.name.local == "stroke-width");
         if (strokeWidthElement != null) {
           strokeWidth = double.tryParse(strokeWidthElement.value) ?? null;
         }
@@ -156,12 +153,12 @@ class PathSegment {
   }
 
   /// A continuous path/segment
-  Path path;
+  Path? path;
   double strokeWidth;
   Color color;
 
   /// Length of the segment path
-  double length;
+  late double length;
 
   /// Denotes the index of the first segment of the containing path when PathOrder.original
   int firstSegmentOfPathIndex;

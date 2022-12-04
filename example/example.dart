@@ -12,7 +12,7 @@ class Playground extends StatefulWidget {
 class _PlaygroundState extends State<Playground>
     with SingleTickerProviderStateMixin {
   var run = true;
-  AnimationController _controller;
+  late AnimationController _controller;
 
   @override
   void initState() {

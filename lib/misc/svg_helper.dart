@@ -8,7 +8,7 @@ class SVGHelper {
   // Extract SVG path data fields from an SVG input
   RegExp _svgPathPattern = new RegExp("""<path .*(?<= )d="([^"]+)".*/>""");
 
-  bool isNumeric(String s) {
+  bool isNumeric(String? s) {
     if (s == null) {
       return false;
     }
@@ -24,13 +24,13 @@ class SVGHelper {
         .allMatches(input)
         .toList()
         .where((e) => isNumeric(e.group(0)))
-        .map((e) => double.parse(e.group(0)))
+        .map((e) => double.parse(e.group(0)!))
         .toList();
 
     return listMatched;
   }
 
-  Path buildPath(String inputData) {
+  Path? buildPath(String inputData) {
     Path p = Path();
     try {
       var matcher = _svgInstructionPattern.allMatches(inputData).toList();
@@ -44,13 +44,13 @@ class SVGHelper {
       var curve = false;
 
       matcher.forEach((matchElem) {
-        var command = matchElem.group(1);
+        var command = matchElem.group(1)!;
         var coordinateStr = matchElem.group(2);
         // print("[$command]: $coordinateStr");
 
         switch (command.toLowerCase()) {
           case 'm':
-            var it = coordinateStr.split(',');
+            var it = coordinateStr!.split(',');
             var x = double.parse(it[0]);
             var y = double.parse(it[1]);
 
@@ -70,7 +70,7 @@ class SVGHelper {
             }
             break;
           case 'l':
-            var it = coordinateStr.split(',');
+            var it = coordinateStr!.split(',');
             var x = double.parse(it[0]);
             var y = double.parse(it[1]);
             if (command == command.toUpperCase()) {
@@ -84,7 +84,7 @@ class SVGHelper {
             }
             break;
           case 'v':
-            List<double> coordinates = getCoordinatesGroup(coordinateStr);
+            List<double> coordinates = getCoordinatesGroup(coordinateStr!);
             var y = coordinates.first;
             if (command == command.toUpperCase()) {
               p.lineTo(lastX, y);
@@ -95,7 +95,7 @@ class SVGHelper {
             }
             break;
           case 'h':
-            List<double> coordinates = getCoordinatesGroup(coordinateStr);
+            List<double> coordinates = getCoordinatesGroup(coordinateStr!);
             var x = coordinates.first;
             if (command == command.toUpperCase()) {
               p.lineTo(x, lastY);
@@ -107,7 +107,7 @@ class SVGHelper {
             break;
           case 'c':
             curve = true;
-            List<double> coordinates = getCoordinatesGroup(coordinateStr);
+            List<double> coordinates = getCoordinatesGroup(coordinateStr!);
             var x1 = coordinates[0];
             var y1 = coordinates[1];
 
@@ -136,7 +136,7 @@ class SVGHelper {
             break;
           case 's':
             curve = true;
-            List<double> coordinates = getCoordinatesGroup(coordinateStr);
+            List<double> coordinates = getCoordinatesGroup(coordinateStr!);
             var x2 = coordinates[0];
             var y2 = coordinates[1];
 

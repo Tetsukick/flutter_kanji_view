@@ -5,22 +5,22 @@ import 'painter.dart';
 import 'parser.dart';
 
 class PathPainterBuilder {
-  List<Paint> paints;
-  void Function(int currentPaintedPathIndex) onFinishFrame;
-  bool scaleToViewport;
-  DebugOptions debugOptions;
-  List<PathSegment> pathSegments;
-  bool isUnderlay;
-  LineAnimation lineAnimation;
-  Animation<double> animation;
-  Size customDimensions;
+  List<Paint>? paints;
+  void Function(int currentPaintedPathIndex)? onFinishFrame;
+  bool? scaleToViewport;
+  DebugOptions? debugOptions;
+  List<PathSegment>? pathSegments;
+  bool? isUnderlay;
+  LineAnimation? lineAnimation;
+  Animation<double>? animation;
+  Size? customDimensions;
 
-  PathPainterBuilder([LineAnimation lineAnimation, bool isUnderlay]) {
+  PathPainterBuilder([LineAnimation? lineAnimation, bool? isUnderlay]) {
     this.lineAnimation = lineAnimation;
     this.isUnderlay = isUnderlay;
   }
 
-  PathPainter build() {
+  PathPainter? build() {
     if (isUnderlay != null && isUnderlay == true) {
       return PaintedPainter(animation, pathSegments, customDimensions, paints,
           onFinishFrame, scaleToViewport, debugOptions);
@@ -37,7 +37,7 @@ class PathPainterBuilder {
     }
   }
 
-  void setAnimation(Animation<double> animation) {
+  void setAnimation(Animation<double>? animation) {
     this.animation = animation;
   }
 
@@ -45,7 +45,7 @@ class PathPainterBuilder {
     this.isUnderlay = isUnderlay;
   }
 
-  void setCustomDimensions(Size customDimensions) {
+  void setCustomDimensions(Size? customDimensions) {
     this.customDimensions = customDimensions;
   }
 
@@ -62,7 +62,7 @@ class PathPainterBuilder {
     this.scaleToViewport = sc;
   }
 
-  void setDebugOptions(DebugOptions debug) {
+  void setDebugOptions(DebugOptions? debug) {
     this.debugOptions = debug;
   }
 

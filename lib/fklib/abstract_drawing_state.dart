@@ -147,18 +147,20 @@ abstract class AbstractAnimatedDrawingState extends State<KanjiViewer> {
     });
   }
 
-  PathPainter? buildUnderlayPainter() {
+  PathPainter? buildUnderlayPainter(Size size) {
     if (pathSegmentsToAnimate.isEmpty) return null;
     PathPainterBuilder builder = preparePathPainterBuilder();
+    builder.setCustomDimensions(size);
     builder.setPathSegments(this.pathSegmentsToAnimate);
     builder.setIsUnderlay(true);
     return builder.build();
   }
 
-  PathPainter? buildForegroundPainter() {
+  PathPainter? buildForegroundPainter(Size size) {
     if (pathSegmentsToAnimate.isEmpty) return null;
     PathPainterBuilder builder =
         preparePathPainterBuilder(this.widget.lineAnimation);
+    builder.setCustomDimensions(size);
     builder.setPathSegments(this.pathSegmentsToAnimate);
     return builder.build();
   }
@@ -238,10 +240,10 @@ abstract class AbstractAnimatedDrawingState extends State<KanjiViewer> {
     return Stack(
       children: <Widget>[
         CustomPaint(
-            painter: buildUnderlayPainter(),
-            size: Size.copy(MediaQuery.of(context).size)),
+            painter: buildUnderlayPainter(size),
+            size: size),
         CustomPaint(
-            foregroundPainter: buildForegroundPainter(),
+            foregroundPainter: buildForegroundPainter(size),
             painter: buildBackgroundPainter(size),
             size: size)
       ],

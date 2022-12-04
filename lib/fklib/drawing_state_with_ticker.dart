@@ -7,7 +7,10 @@ import 'drawing_widget.dart';
 /// A state implementation with an implemented animation controller to simplify the animation process
 class AnimatedDrawingWithTickerState extends AbstractAnimatedDrawingState
     with SingleTickerProviderStateMixin {
-  AnimatedDrawingWithTickerState() : super() {
+  final Size size;
+  AnimatedDrawingWithTickerState({
+    required this.size
+  }) : super() {
     this.onFinishAnimation = () {
       if (!this.onFinishEvoked) {
         this.onFinishEvoked = true;
@@ -52,7 +55,7 @@ class AnimatedDrawingWithTickerState extends AbstractAnimatedDrawingState
   @override
   Widget build(BuildContext context) {
     buildAnimation();
-    return createCustomPaint(context);
+    return createCustomPaint(context, size);
   }
 
   Future<void> buildAnimation() async {

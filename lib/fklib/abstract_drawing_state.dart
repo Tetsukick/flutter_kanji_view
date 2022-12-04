@@ -163,9 +163,10 @@ abstract class AbstractAnimatedDrawingState extends State<KanjiViewer> {
     return builder.build();
   }
 
-  PathPainter? buildBackgroundPainter() {
+  PathPainter? buildBackgroundPainter(Size size) {
     if (pathSegmentsToPaintAsBackground.isEmpty) return null;
     PathPainterBuilder builder = preparePathPainterBuilder();
+    builder.setCustomDimensions(size);
     builder.setPathSegments(this.pathSegmentsToPaintAsBackground);
     return builder.build();
   }
@@ -232,7 +233,7 @@ abstract class AbstractAnimatedDrawingState extends State<KanjiViewer> {
     }
   }
 
-  Widget createCustomPaint(BuildContext context) {
+  Widget createCustomPaint(BuildContext context, Size size) {
     updatePathData(); //TODO Refactor - SRP broken (see method name)
     return Stack(
       children: <Widget>[
@@ -241,8 +242,8 @@ abstract class AbstractAnimatedDrawingState extends State<KanjiViewer> {
             size: Size.copy(MediaQuery.of(context).size)),
         CustomPaint(
             foregroundPainter: buildForegroundPainter(),
-            painter: buildBackgroundPainter(),
-            size: Size.copy(MediaQuery.of(context).size))
+            painter: buildBackgroundPainter(size),
+            size: size)
       ],
     );
   }

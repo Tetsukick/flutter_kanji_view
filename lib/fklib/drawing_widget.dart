@@ -39,8 +39,8 @@ class KanjiViewer extends StatefulWidget {
     this.onPaint,
     //For both
     this.animationOrder,
-    this.width,
-    this.height,
+    required this.width,
+    required this.height,
     this.range,
     this.lineAnimation = LineAnimation.oneByOne,
     this.underlayStrokes,
@@ -81,8 +81,8 @@ class KanjiViewer extends StatefulWidget {
     this.onPaint,
     //For both
     this.animationOrder,
-    this.width,
-    this.height,
+    required this.width,
+    required this.height,
     this.range,
     this.lineAnimation = LineAnimation.oneByOne,
     this.underlayStrokes,
@@ -130,8 +130,8 @@ class KanjiViewer extends StatefulWidget {
     this.onPaint,
     //For both
     this.animationOrder,
-    this.width,
-    this.height,
+    required this.width,
+    required this.height,
     this.range,
     this.lineAnimation = LineAnimation.oneByOne,
     this.underlayStrokes,
@@ -201,10 +201,10 @@ class KanjiViewer extends StatefulWidget {
   final Duration? duration;
 
   /// When [width] is specified parent constraints are ignored. When only [width] or [height] is specified the original aspect ratio is preserved.
-  final double? width;
+  final double width;
 
   /// When [height] is specified parent constraints are ignored. When only [width] or [height] is specified the original aspect ratio is preserved.
-  final double? height;
+  final double height;
 
   /// Specifies a start and end point from where to start and stop the animation.
   ///
@@ -231,9 +231,9 @@ class KanjiViewer extends StatefulWidget {
   @override
   AbstractAnimatedDrawingState createState() {
     if (this.controller != null) {
-      return new AnimatedDrawingState();
+      return new AnimatedDrawingState(size: Size(width, height));
     }
-    return new AnimatedDrawingWithTickerState();
+    return new AnimatedDrawingWithTickerState(size: Size(width, height));
   }
 
   // TODO Refactor SRP

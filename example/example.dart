@@ -37,6 +37,8 @@ class _PlaygroundState extends State<Playground>
             padding: const EdgeInsets.all(6),
             color: Colors.black12,
             child: KanjiViewer.svg("assets/vectors/" + char + ".svg",
+                width: 300,
+                height: 300,
                 scaleToViewport: true,
                 duration: new Duration(seconds: 6)),
           ),
